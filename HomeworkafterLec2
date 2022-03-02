@@ -1,0 +1,43 @@
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+public class Main {
+    public static void main(String[] args) {
+        System.setProperty("webdriver.gecko.driver", "drvs/geckodriver.exe");
+        WebDriver driver = new FirefoxDriver();
+        driver.get("https://www.rshb.ru/");
+        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+        driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
+        WebElement ibank = driver.findElement(By.xpath("//*[contains(@class, 'container header__container')]//*[text()='Интернет-банк']"));
+        ibank.click();
+
+        driver.get("https://online.rshb.ru/b1/ib6/wf2/retail/ib/loginretaildefault");
+        System.out.println("Page title is : " + driver.getTitle());
+
+        WebElement login = driver.findElement(By.id("textfield"));
+                login.sendKeys("test");
+
+        WebElement psw = driver.findElement(By.id("passwordfield"));
+        psw.sendKeys("test");
+
+        WebElement intrude = driver.findElement(By.xpath("/html/body/div[2]/div[1]/div[2]/div[3]/div[1]/div[2]/div/div/div[1]/div/form/div[1]/div/div[1]/div[9]/span/a/div/div/div[2]/div"));
+        intrude.click();
+
+        new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[2]/div[1]/div[2]/div[3]/div[1]/div[2]/div/div/div[1]/div/form/div[1]/ul/li")));
+        WebElement fixed = driver.findElement(By.xpath("/html/body/div[2]/div[1]/div[2]/div[3]/div[1]/div[2]/div/div/div[1]/div/form/div[1]/ul/li"));
+        if (fixed.isEnabled()) {
+            System.out.println("Логин или пароль введены неверно.");
+        }
+    }
+}
